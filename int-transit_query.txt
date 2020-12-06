@@ -1,0 +1,36 @@
+CREATE TABLE `sql_task`.`in-transit` (
+  `sku` INT NOT NULL,
+  `location` VARCHAR(45) NULL,
+  `qty` INT NULL,
+  `diliveryDate` DATETIME NULL,
+  `sendoutDate` DATETIME NULL,
+  `lotCost` INT NULL,
+  `orderNumber` INT NULL,
+  `sourceFrom` VARCHAR(45) NULL,
+  PRIMARY KEY (`sku`));
+
+use sql_task;
+
+INSERT INTO intransit (sku)
+SELECT id FROM part;
+
+INSERT INTO intransit (location)
+SELECT name FROM locationgroup;
+
+INSERT INTO intransit (qty)
+SELECT Count(id) FROM uom;
+
+INSERT INTO intransit (deliveryDate)
+SELECT dateCompleted FROM po;
+
+INSERT INTO intransit (sendoutDate)
+SELECT dateConfirmed FROM po;
+
+INSERT INTO intransit (lotCost)
+SELECT deliverTo FROM po;
+
+INSERT INTO intransit (orderNumber)
+SELECT id FROM po;
+
+INSERT INTO intransit (sourceFrom)
+SELECT name FROM vendor;
